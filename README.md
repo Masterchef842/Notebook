@@ -14,7 +14,7 @@ A handy website for keeping track of any shot notes you might have, complete wit
 - [License](#License)
 
 ## Installation
-    Just go to the deployed site at https://masterchef842.github.io/Notebook/
+    Just go to the deployed site at https://post-it-notebook.herokuapp.com/notes
 
 ## Usage
 
