@@ -9,6 +9,12 @@ const {
 
 const app=express();
 
+const getNextId= async()=>{
+    let data= await readFromFile('./db/db.json');
+    let parsedData=JSON.parse(data)
+    return ((+ parsedData[parsedData.length-1].id)+1)
+}
+
 //get all notes
 app.get('/notes',(req, res)=>{readFromFile('./db/db.json')
 .then((data) => res.json(JSON.parse(data)));
@@ -16,14 +22,16 @@ app.get('/notes',(req, res)=>{readFromFile('./db/db.json')
 
 
 //post a new note
-app.post('/notes',(req, res)=>{
+app.post('/notes',async (req, res)=>{
     console.log("POST recieved")
     const {title, text}=req.body 
-
+    let nextId=await getNextId();
     if(title && text){
+        
         const note={
             title,
             text,
+            id: nextId
         }
         readAndAppend(note,'./db/db.json')
         res.json("New note added successfully")
@@ -34,13 +42,13 @@ app.post('/notes',(req, res)=>{
 });
 
 //delete note
-app.delete('/notes', (req,res)=>{
-    
+app.delete('/notes/:id', (req,res)=>{
+
 })
 
     
 
-   
+
 
 
 
