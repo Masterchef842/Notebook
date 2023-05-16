@@ -12,7 +12,12 @@ const app=express();
 const getNextId= async()=>{
     let data= await readFromFile('./db/db.json');
     let parsedData=JSON.parse(data)
-    return ((+ parsedData[parsedData.length-1].id)+1)
+    if(parsedData[parsedData.length-1].id){
+        
+        return ((+ parsedData[parsedData.length-1].id)+1)
+    }
+        return 1;
+    
 }
 
 //get all notes
@@ -43,7 +48,15 @@ app.post('/notes',async (req, res)=>{
 
 //delete note
 app.delete('/notes/:id', (req,res)=>{
-
+    let noteId=+req.params.id;
+    readFromFile('./db/db.json')
+    .then((data) => JSON.parse(data))
+    .then((json) =>{
+        const result=json.filter((note)=>note.id!==noteId)
+        console.log(result);
+        writeToFile('./db/db.json', result)
+        res.json(`Item with id ${noteId} has been obliterated`)
+    })
 })
 
     
